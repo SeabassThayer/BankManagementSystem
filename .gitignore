@@ -1,0 +1,62 @@
+/out/
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+*.obj
+*.pdb
+*.exe
+*.ninja
+*.manifest
+*.tlog
+
+# ----------------------------------------------------------
+# Visual Studio / VSCode / CMake C++ Project .gitignore
+# ----------------------------------------------------------
+
+# Visual Studio cache and settings
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code settings
+.vscode/
+
+# Build directories (CMake)
+build/
+out/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Compiled binaries
+*.exe
+*.dll
+*.lib
+*.obj
+*.o
+*.pdb
+*.ilk
+*.idb
+
+# Temporary files
+*.log
+*.cache
+*.tmp
+
+# Other system files
+Thumbs.db
+desktop.ini
+
+# Backup / autosave files
+*~
+*.bak
+*.swp
+*.swo
+
+# Generated test output
+Testing/
+CTestTestfile.cmake
+DartConfiguration.tcl
