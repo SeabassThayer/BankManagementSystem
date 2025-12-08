@@ -2,5 +2,12 @@
   "ExpandedNodes": [
     ""
   ],
-  "PreviewInSolutionExplorer": false
+  "SelectedNode": "\\CMakeLists.txt.txt",
+  "PreviewInSolutionExplorer": false,
+  "OutputFoldersPerTargetSystem": {
+    "Local Machine": [
+      "out\\build\\x64-Debug",
+      "out\\install\\x64-Debug"
+    ]
+  }
 }
