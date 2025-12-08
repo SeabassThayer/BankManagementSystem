@@ -3,3 +3,4 @@
 
 #include <string>
 
+#endif //LOGINMANAGER_H

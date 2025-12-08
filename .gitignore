@@ -1,18 +1,3 @@
-/out/
-/build/
-/CMakeFiles/
-/CMakeCache.txt
-*.obj
-*.pdb
-*.exe
-*.ninja
-*.manifest
-*.tlog
-
-# ----------------------------------------------------------
-# Visual Studio / VSCode / CMake C++ Project .gitignore
-# ----------------------------------------------------------
-
 # Visual Studio cache and settings
 .vs/
 *.suo

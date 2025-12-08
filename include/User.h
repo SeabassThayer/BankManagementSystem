@@ -4,6 +4,11 @@
 #include <string>
 
 class User {
+private:
+    std::string username;
+    std::string password;
+    // Additional attributes related to user accounts can be added here
+
 public:
     User(const std::string& username, const std::string& password);
     
@@ -11,11 +16,6 @@ public:
     bool validatePassword(const std::string& password) const;
 
     // Additional methods for managing user accounts can be declared here
-
-private:
-    std::string username;
-    std::string password;
-    // Additional attributes related to user accounts can be added here
 };
 
 #endif // USER_H
