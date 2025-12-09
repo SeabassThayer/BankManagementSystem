@@ -16,6 +16,9 @@ public:
     bool login(const std::string& username, const std::string& password);
     void viewAllUsers(const std::vector<User>& users);
     void manageUserAccounts();
+
+    void resetIDs() const;
+    void eraseAllUsers() const;
 };
 
 #endif // BANKMANAGER_H
