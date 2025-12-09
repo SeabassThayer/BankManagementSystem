@@ -5,11 +5,14 @@
 #include <vector>
 #include "BankAccount.h"
 
+// Uses derived class, User, to fill in for basic customer information. 
 class Customer : public User {
 private:
+    //unique identifier
+    int customerID;
     static int totalCustomers;
     std::vector<BankAccount>& bankAccounts;
-    int customerID;
+
 
 public:
     Customer(const std::string& user, const std::string& pass,const std::string& fName, const std::string& lName, const int& id = -1, const int& id2 = -1);
