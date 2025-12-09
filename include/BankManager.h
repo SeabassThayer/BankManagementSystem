@@ -7,11 +7,14 @@
 #include "Customer.h"
 #include "BankAccount.h"
 
+// Uses derived class, User, to fill in for basic manager information. 
 class BankManager : public User {
 private:
+    // unique identifier
     int managerID;
 
 public:
+    //TO-DO:id cannot be -1, because we are not allowed to create new managers
     BankManager(const std::string& user, const std::string& pass,const std::string& fName, const std::string& lName, const int& id = -1, const int& id2 = -1);
     ~BankManager();
 
