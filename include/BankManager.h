@@ -4,18 +4,32 @@
 #include <string>
 #include <vector>
 #include "User.h"
+#include "Customer.h"
+#include "BankAccount.h"
 
-class BankManager {
+class BankManager : public User {
 private:
-    std::string username;
-    std::string password;
+    int managerID;
 
 public:
-    BankManager(const std::string& username, const std::string& password);
+    BankManager(const std::string& user, const std::string& pass,const std::string& fName, const std::string& lName, const int& id = -1, const int& id2 = -1);
+    ~BankManager();
+
+    std::string getUsername() const override;
+    std::string getPassword() const override;
+
+    int getManagerID() const;
     
-    bool login(const std::string& username, const std::string& password);
-    void viewAllUsers(const std::vector<User>& users);
-    void manageUserAccounts();
+    void viewAllCustomers(const std::vector<User>& users) const;
+    Customer findCustomerAccount() const;
+    BankAccount findBankAccount() const;
+    //bool login(const std::string& username, const std::string& password);
+    //void manageUserAccounts();
+
+    void resetIDs() const; //temporary - delete before submission
+    void eraseAllUsers() const; // temporary - delete before submission
+private:
+    int getNewID() const;
 };
 
 #endif // BANKMANAGER_H
