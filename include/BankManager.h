@@ -24,15 +24,15 @@ public:
     int getManagerID() const;
     
     void viewAllCustomers(const std::vector<User>& users) const;
-    Customer findCustomerAccount() const;
-    BankAccount findBankAccount() const;
+    Customer findCustomerAccount(std::string& customerID) const;
+    BankAccount findBankAccount(std::string& bankAccountID) const;
     //bool login(const std::string& username, const std::string& password);
     //void manageUserAccounts();
 
     void resetIDs() const; //temporary - delete before submission
     void eraseAllUsers() const; // temporary - delete before submission
 private:
-    int getNewID() const;
+    int getNewID() const override;
 };
 
 #endif // BANKMANAGER_H

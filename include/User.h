@@ -37,7 +37,7 @@ public:
     virtual std::string getPassword() const = 0;
 private:
     // Return a unique ID from the data folder. 
-    int getNewID() const;
+    virtual int getNewID() const;
 };
 
 #endif // USER_H

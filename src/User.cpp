@@ -172,7 +172,7 @@ bool User::validateName(const std::string& fname, const std::string& lname) cons
 
 User::~User() 
 {
-	std::cout << "WARNING: user info has been deleted from program: " << firstName << " " << lastName << std::endl;
+	std::cout << "WARNING: user instance has been deleted from program: " << firstName << " " << lastName << std::endl;
 }
 
 int User::getUserID() const { return userID; }
