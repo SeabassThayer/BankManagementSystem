@@ -77,5 +77,5 @@ void BankAccount::printAccountSummary() const {
 
 
 int BankAccount::getActiveAccounts() {
-
+    return -1;
 }

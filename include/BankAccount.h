@@ -15,7 +15,7 @@ public:
     ~BankAccount();
 
     void deposit(double amount);
-    bool withdraw(double amount);
+    void withdraw(double amount);
     void printAccountSummary() const;
 
     static int getActiveAccounts();

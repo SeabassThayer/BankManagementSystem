@@ -1,11 +1,12 @@
 #ifndef BANKMANAGER_H
 #define BANKMANAGER_H
 
-#include <string>
-#include <vector>
 #include "User.h"
 #include "Customer.h"
 #include "BankAccount.h"
+
+#include <string>
+#include <vector>
 
 // Uses derived class, User, to fill in for basic manager information. 
 class BankManager : public User {
@@ -14,7 +15,6 @@ private:
     int managerID;
 
 public:
-    //TO-DO:id cannot be -1, because we are not allowed to create new managers
     BankManager(const std::string& user, const std::string& pass,const std::string& fName, const std::string& lName, const int& id = -1, const int& id2 = -1);
     ~BankManager();
 
@@ -24,15 +24,12 @@ public:
     int getManagerID() const;
     
     void viewAllCustomers(const std::vector<User>& users) const;
-    Customer findCustomerAccount() const;
-    BankAccount findBankAccount() const;
-    //bool login(const std::string& username, const std::string& password);
-    //void manageUserAccounts();
+    Customer findCustomerAccount(std::string& customerID) const;
+    BankAccount findBankAccount(std::string& bankAccountID) const;
 
-    void resetIDs() const; //temporary - delete before submission
-    void eraseAllUsers() const; // temporary - delete before submission
 private:
-    int getNewID() const;
+    int getNewID() const override;
+    bool setManagerIDs(int userid, int managerid, std::string user) const;
 };
 
 #endif // BANKMANAGER_H
