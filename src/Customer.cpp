@@ -70,6 +70,11 @@ bool Customer::createCustomerFile(std::string user, std::string pass) const
 	return success;
 }
 
+//const std::vector<BankAccount>& Customer::getBankAccounts() const {
+//	return bankAccounts;
+//}
+
+
 void Customer::loadTotalCustomers() {
 	std::ifstream inputFile("../../../data/bankInfo/totalCustomers.txt");
 	if (inputFile.is_open()) {

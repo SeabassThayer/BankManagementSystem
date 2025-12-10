@@ -1,13 +1,19 @@
 #include "Transaction.h"
 #include <string>
+#include <iostream>
 
-Transaction::Transaction(const std::string& accountNumber, TransactionType type, double amount) : accountNumber(accountNumber), type(type), amount(amount)
+Transaction::Transaction(int bankAccID, AccountTransactionType type, double amount, double oldB, double newB, std::string time, int transID)
+	:bankAccountID(bankAccID), transactionType(type), transactionAmount(amount), oldBalance(oldB), newBalance(newB), timestamp(time)
 {
 	
-
 }
 
-std::string Transaction::getAccountNumber() const
+Transaction::~Transaction()
+{
+	std::cout << "BYE!" << std::endl;
+}
+
+/*std::string Transaction::getAccountNumber() const
 {
 	return accountNumber;
 }
@@ -22,5 +28,8 @@ double Transaction::getAmount() const
 std::string Transaction :: getTimestamp() const
 {
 	return timestamp;
-}
+}*/
 
+void Transaction::printTransaction() const {
+	std::cout << "HELLO!" << std::endl;
+}

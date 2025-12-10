@@ -13,6 +13,7 @@ int main()
 {
 	try {
 		Customer::loadTotalCustomers();
+		BankAccount::loadTotalBankAccounts();
 		Customer me("SunnyLord", "SUNNY20lord", "sunny", "lord", 114, 2);
 		std::cout << "user id: " << me.getUserID() << std::endl;
 		std::cout << "customer id: " << me.getCustomerID() << std::endl;
@@ -21,6 +22,8 @@ int main()
 		std::cout << "first name: " << me.getFirstName() << std::endl;
 		std::cout << "last name: " << me.getLastName() << std::endl;
 		std::cout << "total customers: " << me.getTotalCustomers() << std::endl;
+
+		BankAccount sav1(2, BankAccount::BankAccountType::CHECKINGS, 256, -1);
 	}
 	catch (const std::runtime_error& e) {
 		std::cerr << "ERROR: could not create user: " << e.what() << std::endl;

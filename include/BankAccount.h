@@ -9,38 +9,43 @@
 #include <vector>
 
 class BankAccount {
-private:
+public:
     enum class BankAccountType {
         CHECKINGS,
         SAVINGS
     };
 
+private:
     int bankAccountID;
     int customerID;
-
     BankAccountType accountType;
     double balance;
 
-    //std::vector<Transaction>& transactions;
+    std::vector<Transaction> transactions;
 
     static int totalBankAccounts;
 
 public:
-    BankAccount(const std::string& accNumber, const std::string& holderName, double initialBalance);
+    BankAccount(int cusID, BankAccountType type, double initBalance,int accID = -1);
     ~BankAccount();
 
     int getBankAccountID() const;
+    int getCustomerID() const;
     BankAccountType getAccountType() const;
     double getBalance() const;
-    std::string getCustomerID() const;
-
+    
     void deposit(double amount);
     void withdraw(double amount);
     void printAccountSummary() const;
+    
+    const std::vector<Transaction>& getTransactions() const;
 
     static int getTotalBankAccounts();
     static void loadTotalBankAccounts();
     static void saveTotalBankAccounts();
+
+private:
+    int getNewID() const;
 };
 
 #endif // BANKACCOUNT_H

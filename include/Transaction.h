@@ -4,12 +4,13 @@
 #include <string>
 
 class Transaction {
-private:
+public:
     enum class AccountTransactionType {
         DEPOSIT,
         WITHDRAWAL
     };
 
+private:
     int transactionID;
     int bankAccountID;
 
@@ -22,7 +23,7 @@ private:
     std::string timestamp; // To store the time of the transaction
 
 public:
-    Transaction(const std::string& accountNumber, AccountTransactionType type, double amount);
+    Transaction(int bankAccID, AccountTransactionType type, double amount, double oldB, double newB, std::string time, int transID = -1);
     ~Transaction();
 
     int getTransactionID() const;
