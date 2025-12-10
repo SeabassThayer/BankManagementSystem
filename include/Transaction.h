@@ -4,24 +4,39 @@
 #include <string>
 
 class Transaction {
-public:
-    enum class TransactionType {
+private:
+    enum class AccountTransactionType {
         DEPOSIT,
         WITHDRAWAL
     };
 
-    Transaction(const std::string& accountNumber, TransactionType type, double amount);
-    
-    std::string getAccountNumber() const;
-    TransactionType getType() const;
-    double getAmount() const;
+    int transactionID;
+    int bankAccountID;
+
+    AccountTransactionType transactionType;
+
+    double transactionAmount;
+    double oldBalance;
+    double newBalance;
+
+    std::string timestamp; // To store the time of the transaction
+
+public:
+    Transaction(const std::string& accountNumber, AccountTransactionType type, double amount);
+    ~Transaction();
+
+    int getTransactionID() const;
+    int getBankAccountID() const;
+
+    AccountTransactionType getType() const;
+
+    double getTransactionAmount() const;
+    double getOldBalance() const;
+    double getNewBalance() const;
+
     std::string getTimestamp() const;
 
-private:
-    std::string accountNumber;
-    TransactionType type;
-    double amount;
-    std::string timestamp; // To store the time of the transaction
+    void printTransaction() const;
 };
 
 #endif // TRANSACTION_H

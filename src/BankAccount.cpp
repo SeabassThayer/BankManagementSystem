@@ -4,11 +4,12 @@
 #include <string>
 #include <fstream>
 
-BankAccount::BankAccount(const std::string& accNumber, const std::string& holderName, double initialBalance) {
+int BankAccount::totalBankAccounts = 0;
+
+BankAccount::BankAccount(const std::string& accNumber, const std::string& holderName, double initialBalance) 
+{
     
-    BankAccount::accountNumber = accNumber;
-    BankAccount::accountHolderName = holderName;
-    BankAccount::balance = initialBalance;
+
 
 }
 BankAccount::~BankAccount() {}
@@ -23,12 +24,13 @@ void BankAccount::deposit(double amount)
     {
         balance += amount;
         std::cout << "Deposited: " << amount << std::endl << "New Balance: " << balance << std::endl;
-        std::ofstream outputFile("userTransactions/" + accountNumber + ".txt", std::ofstream::app); //Opens the User's transaction file via account #
+        std::ofstream outputFile("userTransactions/" + "accountNumber" + ".txt", std::ofstream::app); //Opens the User's transaction file via account #
         outputFile << "Deposit of: $" << amount << "   Balance of: $" << balance << std::endl; //Stored Line for Transaction History
         outputFile.close();
     }
     
 }
+
 void BankAccount::withdraw(double amount) {
     if (balance < amount) { //If Balance is lower than amount, throw error
        std::cout << "INSUFFICIENT BALANCE" << std::endl; 
@@ -37,21 +39,22 @@ void BankAccount::withdraw(double amount) {
     {
         balance -= amount;
         std::cout << "Withdrawn: " << amount << std::endl << "New Balance: " << balance << std::endl;
-        std::ofstream outputFile("userTransactions/" + accountNumber + ".txt", std::ofstream::app); //Opens the User's transaction file via account #
+        std::ofstream outputFile("userTransactions/" + "accountNumber" + ".txt", std::ofstream::app); //Opens the User's transaction file via account #
         outputFile << "Withdraw of: $" << amount  << "  Balance of: $" << balance << std::endl; //Stored Line for Transaction History
         outputFile.close();
     }
 
 }
+
 void BankAccount::printAccountSummary() const {
     std::cout << "===============================" << std::endl;
     std::cout << "========Account Summary========" << std::endl;
     std::cout << "===============================" << std::endl;
 
-    std::cout << "Account Number: " << accountNumber << std::endl;
+    std::cout << "Account Number: " << "accountNumber" << std::endl;
     std::cout << "Current Balance: " << balance << std::endl;
 
-    std::ifstream inputFile("userTransactions/" + accountNumber + ".txt");
+    std::ifstream inputFile("userTransactions/" + "accountNumber" + ".txt");
 
     if (!inputFile.is_open()) {
         std::cout << "Error: Could not open transaction history." << std::endl;
@@ -73,9 +76,4 @@ void BankAccount::printAccountSummary() const {
     }
 
     inputFile.close();
-}
-
-
-int BankAccount::getActiveAccounts() {
-    return -1;
 }
