@@ -16,11 +16,16 @@ private:
 
 public:
     Customer(const std::string& user, const std::string& pass,const std::string& fName, const std::string& lName, const int& id = -1, const int& id2 = -1);
+    bool createCustomerFile(std::string user, std::string pass) const;
     ~Customer();
 
-    int getCustomerID() const;
     std::vector<BankAccount>& getBankAccounts();
 
+    static int getTotalCustomers();
+    static void loadTotalCustomers();
+    static void saveTotalCustomers();
+    
+    int getCustomerID() const;
     std::string getUsername() const override;
     std::string getPassword() const override;
 

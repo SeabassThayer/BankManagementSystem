@@ -11,5 +11,20 @@
 
 int main() 
 {
+	try {
+		Customer::loadTotalCustomers();
+		Customer me("SunnyLord", "SUNNY20lord", "sunny", "lord", 114, 2);
+		std::cout << "user id: " << me.getUserID() << std::endl;
+		std::cout << "customer id: " << me.getCustomerID() << std::endl;
+		std::cout << "username: " << me.getUsername() << std::endl;
+		std::cout << "password: " << me.getPassword() << std::endl;
+		std::cout << "first name: " << me.getFirstName() << std::endl;
+		std::cout << "last name: " << me.getLastName() << std::endl;
+		std::cout << "total customers: " << me.getTotalCustomers() << std::endl;
+	}
+	catch (const std::runtime_error& e) {
+		std::cerr << "ERROR: could not create user: " << e.what() << std::endl;
+	}
+
 	return 0;
 }
