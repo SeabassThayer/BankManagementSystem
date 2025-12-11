@@ -25,7 +25,7 @@ Customer::Customer(const std::string& user, const std::string& pass, const std::
 		customerID = getNewID();
 	}
 
-	// catch error is customerID was not given a unique ID for some reason. 
+	// catch error if customerID was not given a unique ID for some reason. 
 	if (customerID == -1) {
 		throw std::runtime_error("customerID was not able to be assigned");
 	}

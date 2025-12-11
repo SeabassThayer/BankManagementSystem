@@ -11,9 +11,12 @@
 #include <stdexcept>
 #include <filesystem>
 
+// assume that manager is new to the system if "id2" is -1
+// otherwise, assume that manager is being loaded from the system. 
 BankManager::BankManager(const std::string& user, const std::string& pass, const std::string& fName, const std::string& lName, const int& id, const int& id2)
 	: User(user, "Aa11", fName, lName, id)
 {
+	// if customerID is -1, Manager will be treated as a new manager and assigned a unique managerID
 	managerID = id2;
 	bool newManager = false;
 	if (managerID == -1) {
@@ -22,19 +25,24 @@ BankManager::BankManager(const std::string& user, const std::string& pass, const
 		managerID = getNewID();
 	}
 
+	// catch error if managerID was not given a unique ID for some reason. 
 	if (managerID == -1) {
 		throw std::runtime_error("managerID was not able to be assigned");
 	}
 
+	// execute if Manager is new
 	if (newManager) {
+		// if FALSE, manager ID was not updated in the file system
 		if (!setManagerIDs(getUserID(), getManagerID(), user)) {
 			throw std::runtime_error("IDs were not able to be updated on Manager file");
 		}
 	}
 
+	// print after Manager has been loaded successfully. 
 	std::cout << "manager (" << getFirstName() << ") has been loaded from file" << std::endl;
 }
 
+// use relative path to find file containing a unique manager ID
 int BankManager::getNewID() const
 {
 	std::ifstream inputFile("../../../data/IDtrackers/managerID.txt");
@@ -48,6 +56,7 @@ int BankManager::getNewID() const
 		std::cout << "ERROR: unable to open \"managerID\" for READING" << std::endl;
 	}
 
+	// if unique ID was retrieved, a new unique ID is inserted into the file. 
 	if (id != -1) {
 		std::ofstream outputFile("../../../data/IDtrackers/managerID.txt");
 		if (outputFile.is_open()) {
@@ -59,6 +68,8 @@ int BankManager::getNewID() const
 		}
 	}
 
+	// return unique ID. 
+	// return -1 if unique ID was not retrieved.
 	return id;
 }
 
@@ -126,6 +137,7 @@ bool BankManager::setManagerIDs(int userid, int managerid, std::string user) con
 	return success;
 }
 
+// retrieve username for Manager using their unique ID
 std::string BankManager::getUsername() const 
 {
 	std::string user = "-1";
@@ -133,12 +145,17 @@ std::string BankManager::getUsername() const
 
 	try {
 		bool fileFound = false;
+
+		// loop through the text files found inside of the "managers" folder
 		for (const auto& managerFile : std::filesystem::directory_iterator(folderPath)) {
+			// retrieve the name of the text file
 			std::string indexedManager = managerFile.path().filename().string();
 
+			// open file and initialize string array to input file rows
 			std::ifstream managerInfo(managerFile.path());
 			std::string* lines = new std::string[6];
 
+			// loop through the file and store rows in the string array. 
 			if (managerInfo.is_open()) {
 				std::string line;
 				int i = 0;
@@ -153,7 +170,9 @@ std::string BankManager::getUsername() const
 				throw std::runtime_error(indexedManager + " was not able to be opened for reading");
 			}
 
+			// check if manager ID in file matches the file of the calling Manager. 
 			if (std::to_string(getManagerID()) == *(lines + 1)) {
+				// if match, retrieve the username from the file and remove the string array. 
 				user = *(lines + 2);
 				fileFound = true;
 				delete[] lines;
@@ -170,9 +189,11 @@ std::string BankManager::getUsername() const
 		std::cerr << "ERROR: " << e.what() << std::endl;
 	}
 
+	// return "-1" if username was not found.
 	return user;
 }
 
+// retrieve Password for Manager using their unique ID
 std::string BankManager::getPassword() const 
 {
 	std::string pass = "-1";
@@ -180,12 +201,17 @@ std::string BankManager::getPassword() const
 
 	try {
 		bool fileFound = false;
+
+		// loop through the text files found inside of the "managers" folder
 		for (const auto& managerFile : std::filesystem::directory_iterator(folderPath)) {
+			// retrieve the name of the text file
 			std::string indexedManager = managerFile.path().filename().string();
 
+			// open file and initialize string array to input file rows
 			std::ifstream managerInfo(managerFile.path());
 			std::string* lines = new std::string[6];
 
+			// loop through the file and store rows in the string array. 
 			if (managerInfo.is_open()) {
 				std::string line;
 				int i = 0;
@@ -200,7 +226,9 @@ std::string BankManager::getPassword() const
 				throw std::runtime_error(indexedManager + " was not able to be opened for reading");
 			}
 
+			// check if manager ID in file matches the file of the calling Manager. 
 			if (std::to_string(getManagerID()) == *(lines + 1)) {
+				// if match, retrieve the password from the file and remove the string array. 
 				pass = *(lines + 3);
 				fileFound = true;
 				delete[] lines;
@@ -217,6 +245,7 @@ std::string BankManager::getPassword() const
 		std::cerr << "ERROR: " << e.what() << std::endl;
 	}
 
+	// return "-1" if password was not found. 
 	return pass;
 }
 
