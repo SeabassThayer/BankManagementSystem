@@ -36,6 +36,9 @@ public:
     std::string getTimestamp() const;
 
     void printTransaction() const;
+
+private:
+    int getNewID() const;
 };
 
 #endif // TRANSACTION_H
