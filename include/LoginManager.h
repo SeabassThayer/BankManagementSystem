@@ -1,6 +1,22 @@
 #ifndef LOGINMANAGER_H
 #define LOGINMANAGER_H
 
-#include <string>
+#include "Customer.h"
+#include "BankManager.h"
+#include "BankAccount.h"
 
-#endif //LOGINMANAGER_H
+class LoginManager {
+public:
+    LoginManager();
+    ~LoginManager();
+
+    void run(); // main loop
+
+private:
+    void showMainMenu();
+    void handleUserLogin();
+    void handleAccountCreation();
+    void handleManagerLogin();
+};
+
+#endif // LOGINMANAGER_H

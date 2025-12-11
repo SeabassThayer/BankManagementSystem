@@ -24,7 +24,7 @@ Transaction::Transaction(int bankAccID, AccountTransactionType type, double amou
 
 	// save transaction information to the file system if it is new transaction. 
 	if (newTransaction) {
-		std::ofstream transactionFile("../../../data/" + std::to_string(transactionID) + ".txt");
+		std::ofstream transactionFile("../../../data/transactions/" + std::to_string(transactionID) + ".txt");
 		if (transactionFile.is_open()) {
 			transactionFile << transactionID << std::endl;
 			transactionFile << bankAccountID << std::endl;
