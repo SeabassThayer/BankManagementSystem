@@ -23,7 +23,7 @@ int main()
 		std::cout << "last name: " << me.getLastName() << std::endl;
 		std::cout << "total customers: " << me.getTotalCustomers() << std::endl;
 
-		BankAccount sav1(2, BankAccount::BankAccountType::CHECKINGS, 256, -1);
+		BankAccount sav1(2, BankAccount::BankAccountType::CHECKINGS, 256, 2);
 	}
 	catch (const std::runtime_error& e) {
 		std::cerr << "ERROR: could not create user: " << e.what() << std::endl;

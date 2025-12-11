@@ -5,31 +5,41 @@
 Transaction::Transaction(int bankAccID, AccountTransactionType type, double amount, double oldB, double newB, std::string time, int transID)
 	:bankAccountID(bankAccID), transactionType(type), transactionAmount(amount), oldBalance(oldB), newBalance(newB), timestamp(time)
 {
-	
 }
 
 Transaction::~Transaction()
 {
-	std::cout << "BYE!" << std::endl;
+	std::cout << "WARNING: tranaction record deleted from program memory" << std::endl;
 }
 
-/*std::string Transaction::getAccountNumber() const
-{
-	return accountNumber;
+int Transaction::getTransactionID() const { return transactionID; }
+
+int Transaction::getBankAccountID() const { return bankAccountID; }
+
+std::string Transaction::getType() const 
+{ 
+	if (transactionType == AccountTransactionType::DEPOSIT) {
+		return "Deposit";
+	}
+	else {
+		return "Withdrawal";
+	}
 }
-Transaction::TransactionType Transaction::getType() const
-{
-	return type;
-}
-double Transaction::getAmount() const
-{
-	return amount;
-}
-std::string Transaction :: getTimestamp() const
-{
-	return timestamp;
-}*/
+
+double Transaction::getTransactionAmount() const { return transactionAmount; }
+
+double Transaction::getOldBalance() const { return oldBalance; }
+
+double Transaction::getNewBalance() const { return newBalance; }
+
+std::string Transaction::getTimestamp() const { return timestamp; }
 
 void Transaction::printTransaction() const {
-	std::cout << "HELLO!" << std::endl;
+	std::cout << "Transaction ID: " << getTransactionID() << std::endl;
+	std::cout << "Bank Account ID: " << getBankAccountID() << std::endl;
+	std::cout << "Transaction Tyoe: " << getType() << std::endl;
+	std::cout << "Transaction Amount: " << getTransactionAmount() << std::endl;
+	std::cout << "Previous Balance: " << getOldBalance() << std::endl;
+	std::cout << "New Balance: " << getNewBalance() << std::endl;
+	std::cout << "Time of Transaction : " << getTimestamp() << std::endl;
 }

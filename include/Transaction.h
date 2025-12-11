@@ -29,12 +29,10 @@ public:
     int getTransactionID() const;
     int getBankAccountID() const;
 
-    AccountTransactionType getType() const;
-
+    std::string getType() const;
     double getTransactionAmount() const;
     double getOldBalance() const;
     double getNewBalance() const;
-
     std::string getTimestamp() const;
 
     void printTransaction() const;

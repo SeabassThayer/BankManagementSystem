@@ -3,9 +3,8 @@
 
 #include <string>
 #include <vector>
-#include "BankAccount.h"
+class BankAccount;
 #include "User.h"
-#include "Transaction.h"
 
 // Uses derived class, User, to fill in for basic customer information. 
 class Customer : public User {
@@ -13,15 +12,14 @@ private:
     //unique identifier
     int customerID;
     static int totalCustomers;
-    std::vector<Transaction> transactions;
-    //std::vector<BankAccount> bankAccounts;
+    std::vector<BankAccount> bankAccounts;
 
 public:
     Customer(const std::string& user, const std::string& pass,const std::string& fName, const std::string& lName, const int& id = -1, const int& id2 = -1);
     bool createCustomerFile(std::string user, std::string pass) const;
     ~Customer();
 
-    //const std::vector<BankAccount>& getBankAccounts() const;
+    const std::vector<BankAccount>& getBankAccounts() const;
 
     static int getTotalCustomers();
     static void loadTotalCustomers();
