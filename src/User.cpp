@@ -40,9 +40,6 @@ User::User(const std::string& user, const std::string& pass, const std::string& 
 	else {
 		throw std::runtime_error("First/last name are not valid");
 	}
-
-	// Only runs if all validation checks succeed and user is able to be created. 
-	std::cout << "new user has been created!" << std::endl;
 }
 
 int User::getNewID() const
@@ -170,10 +167,7 @@ bool User::validateName(const std::string& fname, const std::string& lname) cons
 	return valid;
 }
 
-User::~User() 
-{
-	std::cout << "WARNING: user instance has been deleted from program: " << firstName << " " << lastName << std::endl;
-}
+User::~User() { }
 
 int User::getUserID() const { return userID; }
 

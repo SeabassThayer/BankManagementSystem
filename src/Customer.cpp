@@ -20,7 +20,6 @@ Customer::Customer(const std::string& user, const std::string& pass, const std::
 	customerID = id2;
 	bool newCustomer = false;
 	if (customerID == -1) {
-		std::cout << "Welcome to Awesome Bank! IDs will be assigned" << std::endl;
 		newCustomer = true;
 		customerID = getNewID();
 	}
@@ -40,9 +39,6 @@ Customer::Customer(const std::string& user, const std::string& pass, const std::
 		totalCustomers++;
 		saveTotalCustomers();
 	}
-
-	// print after Customer has been created successfully. 
-	std::cout << "customer (" << getFirstName() << ") has been loaded from file" << std::endl;
 }
 
 // attempt to add Customer to the file system 
@@ -67,7 +63,6 @@ bool Customer::createCustomerFile(std::string user, std::string pass) const
 			newCustomerFile << getFirstName() << std::endl;
 			newCustomerFile << getLastName() << std::endl;
 
-			std::cout << "Customer file created:" << fullPath << std::endl;
 			newCustomerFile.close();
 		}
 		else {
@@ -264,9 +259,6 @@ std::string Customer::getPassword() const
 	return pass;
 }
 
-Customer::~Customer()
-{
-	std::cout << "WARNING: Customer instance removed from program: " << getFirstName() << " " << getLastName() << std::endl;
-}
+Customer::~Customer() { }
 
 int Customer::getCustomerID() const { return customerID; }

@@ -16,7 +16,6 @@ BankAccount::BankAccount(int cusID, BankAccountType type, double initBalance, in
     // and account will be marked as new during constructor execution. 
     bool newAccount = false;
     if (accID == -1) {
-        std::cout << "Creating new bank account. IDs will be assigned." << std::endl;
         newAccount = true;
         bankAccountID = getNewID();
     }
@@ -47,8 +46,6 @@ BankAccount::BankAccount(int cusID, BankAccountType type, double initBalance, in
             throw std::runtime_error("Bank account file could not be created");
         }
     }
-
-    std::cout << "Bank account (" << bankAccountID << ") has been loaded/created." << std::endl;
 }
 
 // retrieve new unique Bank Account ID using relative paths
@@ -80,10 +77,7 @@ int BankAccount::getNewID() const {
     return id;
 }
 
-BankAccount::~BankAccount() 
-{
-    std::cout << "WARNING: Bank account is being removed from program memory" << std::endl;
-}
+BankAccount::~BankAccount() { }
 
 // return all transactions saved by Class instance on it's transactions variable. 
 const std::vector<Transaction>& BankAccount::getTransactions() const {
@@ -98,11 +92,11 @@ void BankAccount::deposit(double amount)
     }
     else
     {
+        int old = balance;
         balance += amount;
-        transactions.emplace_back(customerID, Transaction::AccountTransactionType::DEPOSIT, amount, 0, balance, "time", -1);
+        transactions.emplace_back(customerID, Transaction::AccountTransactionType::DEPOSIT, amount, old, balance, "N/A", -1);
         std::cout << "Deposited: $" << amount << std::endl << "New Balance: $" << balance << std::endl;
     }
-    
 }
 
 void BankAccount::withdraw(double amount) {
@@ -116,11 +110,11 @@ void BankAccount::withdraw(double amount) {
     }
     else 
     {
+        int old = balance;
         balance -= amount;
         std::cout << "Withdrawn: $" << amount << std::endl << "New Balance: $" << balance << std::endl;
-        transactions.emplace_back(customerID, Transaction::AccountTransactionType::WITHDRAWAL, amount, 0, balance, "time unspecified",-1);
+        transactions.emplace_back(customerID, Transaction::AccountTransactionType::WITHDRAWAL, amount, old, balance, "N/A",-1);
     }
-
 }
 
 // print account summary plus all transactions, if any. 
