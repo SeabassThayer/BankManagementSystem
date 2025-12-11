@@ -3,9 +3,12 @@
 #include <iostream>
 #include <fstream>
 
+// assuming that the transaction is being created, if transID is -1
+// if it is not -1, then it will treat the transaction as being loaded from file system. 
 Transaction::Transaction(int bankAccID, AccountTransactionType type, double amount, double oldB, double newB, std::string time, int transID)
 	:bankAccountID(bankAccID), transactionType(type), transactionAmount(amount), oldBalance(oldB), newBalance(newB), timestamp(time)
 {
+	// if transID is found to be -1, the transaction will be given a unique ID to replace the -1. 
 	transactionID = transID;
 	bool newTransaction = false;
 	if (transactionID == -1) {
@@ -14,10 +17,12 @@ Transaction::Transaction(int bankAccID, AccountTransactionType type, double amou
 		transactionID = getNewID();
 	}
 
+	// catch error if previous section failed to guarantee that the transaction has a valid, unique ID. 
 	if (transactionID == -1) {
 		throw std::runtime_error("transactionID was not able to be assigned");
 	}
 
+	// save transaction information to the file system if it is new transaction. 
 	if (newTransaction) {
 		std::ofstream transactionFile("../../../data/" + std::to_string(transactionID) + ".txt");
 		if (transactionFile.is_open()) {
@@ -35,14 +40,17 @@ Transaction::Transaction(int bankAccID, AccountTransactionType type, double amou
 		throw std::runtime_error("Transaction file was not created");
 	}
 
+	// will display after transaction has been successfully created
 	std::cout << "Transaction File was generated!" << std::endl;
 }
 
 int Transaction::getNewID() const
 {
+	// relative path to the location of transactionID
 	std::ifstream inputFile("../../../data/IDtrackers/transactionID.txt");
 	int id = -1;
 
+	// retrieve unique ID from file system. 
 	if (inputFile.is_open()) {
 		inputFile >> id;
 		inputFile.close();
@@ -51,6 +59,7 @@ int Transaction::getNewID() const
 		std::cout << "ERROR: unable to open \"transactionID\" for READING" << std::endl;
 	}
 
+	// if unique ID succesfully retrieved, will save value and save a new unique ID to the same file. 
 	if (id != -1) {
 		std::ofstream outputFile("../../../data/IDtrackers/transactionID.txt");
 		if (outputFile.is_open()) {
@@ -62,6 +71,7 @@ int Transaction::getNewID() const
 		}
 	}
 
+	// will either return a new unique ID, or a -1 that tells the caller that it did not retrieve a unique ID. 
 	return id;
 }
 
@@ -69,6 +79,8 @@ Transaction::~Transaction()
 {
 	std::cout << "WARNING: tranaction record deleted from program memory" << std::endl;
 }
+
+						// getters //
 
 int Transaction::getTransactionID() const { return transactionID; }
 
@@ -92,6 +104,7 @@ double Transaction::getNewBalance() const { return newBalance; }
 
 std::string Transaction::getTimestamp() const { return timestamp; }
 
+// call getters to print transaction summary.
 void Transaction::printTransaction() const {
 	std::cout << "Transaction ID: " << getTransactionID() << std::endl;
 	std::cout << "Bank Account ID: " << getBankAccountID() << std::endl;
