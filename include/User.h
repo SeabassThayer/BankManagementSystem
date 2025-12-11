@@ -16,7 +16,7 @@ private:
     std::string lastName;
 
 public:
-    // // Constructs a User. If 'id' is -1, a new unique ID will be assigned.
+    // Constructs a User. If 'id' is -1, a new unique ID will be assigned.
     User(const std::string& user, const std::string& pass, const std::string& fName, const std::string& lName, const int& id = -1);
     virtual ~User();
 
