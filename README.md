@@ -13,6 +13,7 @@ The project is organized into several directories and files:
   - `BankAccount.cpp`: Implementation of the BankAccount class.
   - `BankManager.cpp`: Implementation of the BankManager class.
   - `LoginManager.cpp`: Implementation of the LoginManager class.
+  - `Customer.cpp`: Implementation of the Customer class. 
 
 - **include/**: Contains header files for the classes.
   - `User.h`: Declaration of the User class.
@@ -20,15 +21,15 @@ The project is organized into several directories and files:
   - `BankAccount.h`: Declaration of the BankAccount class.
   - `BankManager.h`: Declaration of the BankManager class.
   - `LoginManager.h`: Declaration of the LoginManager class.
+  - `Customer.cpp`: Implementation of the Customer class. 
 
-- **data/**: Contains CSV files for user and manager login information.
-  - `users.csv`: Stores user login information and account details.
-  - `managers.csv`: Stores manager login information.
-
-- **tests/**: Contains unit tests for the application.
-  - `test_User.cpp`: Unit tests for the User class.
-  - `test_BankAccount.cpp`: Unit tests for the BankAccount class.
-  - `CMakeLists.txt`: Configuration for building tests.
+- **data/**: Contains TXT files for user and manager login information.
+  - **bankAccounts/**: Contains text files that each contain a bank account.
+  - **bankInfo/**: Contains text files that each contain bank logistics.
+  - **customers/**: Contains text files that each contain a customer.
+  - **IDtrackers/**: Contains text files that each contain a unique ID to assign to a new entity.
+  - **managers/**: Contains text files that each contain a manager.
+  - **transactions/**: Contains text files that each contain a transaction.
 
 - **CMakeLists.txt**: Configuration file for CMake to build the project.
 
