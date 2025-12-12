@@ -33,11 +33,12 @@ public:
     bool validateName(const std::string& fname, const std::string& lname) const;
 
     // pure virtual functions to be implemented in BankManager & Customer class. 
-    virtual std::string getUsername() const = 0;
-    virtual std::string getPassword() const = 0;
-private:
+    std::string getUsername() const;
+    std::string getPassword() const;
+
+protected:
     // Return a unique ID from the data folder. 
-    virtual int getNewID() const;
+    virtual int getNewID() const = 0;
 };
 
 #endif // USER_H

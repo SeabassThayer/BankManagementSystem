@@ -11,9 +11,8 @@ class Customer : public User {
 private:
     //unique identifier
     int customerID;
-    
+
     // current number of customers in the system. 
-    // saved in file system to keep track even if program terminates. 
     static int totalCustomers;
 
     // stores all the bank accounts that belong to the Customer.
@@ -21,13 +20,17 @@ private:
 
 public:
     // constructs a Customer with default parameters that assume the Customer is new to the system. 
-    Customer(const std::string& user, const std::string& pass,const std::string& fName, const std::string& lName, const int& id = -1, const int& id2 = -1);
-    
-    // attempts to save Customer data to the system
-    // will return false, if attempt fails. 
-    bool createCustomerFile(std::string user, std::string pass) const;
+    Customer(const std::string& user, const std::string& pass, const std::string& fName, const std::string& lName, const int& id = -1, const int& id2 = -1);
+
+    // attempts to save Customer data to the system (Now appends to customers.txt)
+    bool createCustomerFile() const;
 
     ~Customer();
+
+    // FIX 1: Corrected signature to take 6 arguments
+    static bool findAndAuthenticate(const std::string& user, const std::string& pass,
+        int& foundUserID, int& foundCustomerID,
+        std::string& foundFName, std::string& foundLName);
 
     // returns the bank accounts that belong to the Customer. 
     const std::vector<BankAccount>& getBankAccounts() const;
@@ -40,13 +43,14 @@ public:
 
     // save amount of Customers to the file system. 
     static void saveTotalCustomers();
-    
+
     int getCustomerID() const;
 
-    // override base class function with custom getters for username and password
-    std::string getUsername() const override;
+    // FIX 2: Removed 'override'
+    std::string getUsername() const;
 
-    std::string getPassword() const override;
+    // FIX 2: Removed 'override'
+    std::string getPassword() const;
 
 private:
     // return a unique Customer ID to whoever called the function. 

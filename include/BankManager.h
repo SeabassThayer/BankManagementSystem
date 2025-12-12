@@ -16,16 +16,14 @@ private:
 
 public:
     // constructs a Manager with default parameters that assume the Manager is new to the system & logging in for the first time. 
-    BankManager(const std::string& user, const std::string& pass,const std::string& fName, const std::string& lName, const int& id = -1, const int& id2 = -1);
+    BankManager(const std::string& user, const std::string& pass, const std::string& fName, const std::string& lName, const int& id = -1, const int& id2 = -1);
     ~BankManager();
 
-    // override base class function with custom getters for username and password
-    std::string getUsername() const override;
-
-    std::string getPassword() const override;
+    // *** DELETED: getUsername() and getPassword() overrides. ***
+    // They are now inherited from the base User class.
 
     int getManagerID() const;
-    
+
     // TO DO: retrieve all customers in the file system to show their data. 
     void viewAllCustomers(const std::vector<User>& users) const;
 

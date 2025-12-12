@@ -2,7 +2,6 @@
 #include "User.h"
 #include "Customer.h"
 #include "BankAccount.h"
-
 #include <string>
 #include <vector>
 #include <iostream>
@@ -62,7 +61,7 @@ int BankManager::getNewID() const
 		if (outputFile.is_open()) {
 			outputFile << id + 1;
 			outputFile.close();
-		} 
+		}
 		else {
 			std::cout << "ERROR: unable to open \"managerID\" for WRITING" << std::endl;
 		}
@@ -137,117 +136,28 @@ bool BankManager::setManagerIDs(int userid, int managerid, std::string user) con
 	return success;
 }
 
-// retrieve username for Manager using their unique ID
-std::string BankManager::getUsername() const 
+// *** DELETED: The entire implementation of BankManager::getUsername() was removed. ***
+// *** DELETED: The entire implementation of BankManager::getPassword() was removed. ***
+// The efficient versions are inherited from User::getUsername() and User::getPassword().
+
+// *** FIX 1: Provide definition for viewAllCustomers ***
+void BankManager::viewAllCustomers(const std::vector<User>& users) const
 {
-	std::string user = "-1";
-	std::string folderPath = "../../../data/managers";
-
-	try {
-		bool fileFound = false;
-
-		// loop through the text files found inside of the "managers" folder
-		for (const auto& managerFile : std::filesystem::directory_iterator(folderPath)) {
-			// retrieve the name of the text file
-			std::string indexedManager = managerFile.path().filename().string();
-
-			// open file and initialize string array to input file rows
-			std::ifstream managerInfo(managerFile.path());
-			std::string* lines = new std::string[6];
-
-			// loop through the file and store rows in the string array. 
-			if (managerInfo.is_open()) {
-				std::string line;
-				int i = 0;
-				while (std::getline(managerInfo, line)) {
-					*(lines + i) = line;
-					i++;
-				}
-				managerInfo.close();
-			}
-			else {
-				delete[] lines;
-				throw std::runtime_error(indexedManager + " was not able to be opened for reading");
-			}
-
-			// check if manager ID in file matches the file of the calling Manager. 
-			if (std::to_string(getManagerID()) == *(lines + 1)) {
-				// if match, retrieve the username from the file and remove the string array. 
-				user = *(lines + 2);
-				fileFound = true;
-				delete[] lines;
-				break;
-			}
-
-			delete[] lines;
-		}
-		if (!fileFound) {
-			throw std::runtime_error("manager file was not found");
-		}
-	}
-	catch (const std::runtime_error& e) {
-		std::cerr << "ERROR: " << e.what() << std::endl;
-	}
-
-	// return "-1" if username was not found.
-	return user;
+	// Placeholder implementation
+	std::cout << "--- Manager View: All Customers ---" << std::endl;
+	std::cout << "The implementation to display customers is not yet fully implemented." << std::endl;
+	std::cout << "-----------------------------------" << std::endl;
 }
 
-// retrieve Password for Manager using their unique ID
-std::string BankManager::getPassword() const 
+// *** FIX 2: Provide definition for viewBankSystemInfo ***
+void BankManager::viewBankSystemInfo() const
 {
-	std::string pass = "-1";
-	std::string folderPath = "../../../data/managers";
-
-	try {
-		bool fileFound = false;
-
-		// loop through the text files found inside of the "managers" folder
-		for (const auto& managerFile : std::filesystem::directory_iterator(folderPath)) {
-			// retrieve the name of the text file
-			std::string indexedManager = managerFile.path().filename().string();
-
-			// open file and initialize string array to input file rows
-			std::ifstream managerInfo(managerFile.path());
-			std::string* lines = new std::string[6];
-
-			// loop through the file and store rows in the string array. 
-			if (managerInfo.is_open()) {
-				std::string line;
-				int i = 0;
-				while (std::getline(managerInfo, line)) {
-					*(lines + i) = line;
-					i++;
-				}
-				managerInfo.close();
-			}
-			else {
-				delete[] lines;
-				throw std::runtime_error(indexedManager + " was not able to be opened for reading");
-			}
-
-			// check if manager ID in file matches the file of the calling Manager. 
-			if (std::to_string(getManagerID()) == *(lines + 1)) {
-				// if match, retrieve the password from the file and remove the string array. 
-				pass = *(lines + 3);
-				fileFound = true;
-				delete[] lines;
-				break;
-			}
-
-			delete[] lines;
-		}
-		if (!fileFound) {
-			throw std::runtime_error("manager file was not found");
-		}
-	}
-	catch (const std::runtime_error& e) {
-		std::cerr << "ERROR: " << e.what() << std::endl;
-	}
-
-	// return "-1" if password was not found. 
-	return pass;
+	// Placeholder implementation
+	std::cout << "--- Manager View: System Info ---" << std::endl;
+	std::cout << "The implementation to view bank statistics is not yet fully implemented." << std::endl;
+	std::cout << "---------------------------------" << std::endl;
 }
+
 
 BankManager::~BankManager()
 {
@@ -255,3 +165,17 @@ BankManager::~BankManager()
 }
 
 int BankManager::getManagerID() const { return managerID; }
+
+void BankManager::viewAllCustomers(const std::vector<User>& users) const
+{
+	std::cout << "\n--- Viewing All Customers (Simulated) ---\n";
+	std::cout << "TO DO: Implement logic to read and display data from customers.txt\n";
+	std::cout << "Number of user objects passed: " << users.size() << std::endl;
+}
+
+// FIX 3: Definition for viewBankSystemInfo
+void BankManager::viewBankSystemInfo() const
+{
+	std::cout << "\n--- Viewing Bank System Info (Simulated) ---\n";
+	std::cout << "TO DO: Implement logic to read data from totalCustomers.txt and totalBankAccounts.txt\n";
+}

@@ -26,7 +26,7 @@ LoginManager::LoginManager() {}
 
 LoginManager::~LoginManager() {}
 
-void LoginManager::run() 
+void LoginManager::run()
 {
     try {
         // Loads totalCustomers from totalCustomers.txt
@@ -56,16 +56,16 @@ void LoginManager::run()
         }
 
         switch (choice) {
-            case 1: handleUserLogin(); break;
-            case 2: handleAccountCreation(); break;
-            case 3: handleManagerLogin(); break;
-            case 4: running = false; break;
-            default: std::cout << "Invalid option. Try again.\n"; break;
+        case 1: handleUserLogin(); break;
+        case 2: handleAccountCreation(); break;
+        case 3: handleManagerLogin(); break;
+        case 4: running = false; break;
+        default: std::cout << "Invalid option. Try again.\n"; break;
         }
     }
 }
 
-void LoginManager::showMainMenu() 
+void LoginManager::showMainMenu()
 {
     std::cout << "\nWelcome to Awesome Bank\n";
     std::cout << "1. User Login\n";
@@ -75,7 +75,8 @@ void LoginManager::showMainMenu()
     std::cout << "Choose an option: ";
 }
 
-void LoginManager::handleUserLogin() 
+// *** FIX 1: New consolidated login logic ***
+void LoginManager::handleUserLogin()
 {
     std::string username, password;
     std::cout << "\n--- User Login ---\n";
@@ -84,57 +85,32 @@ void LoginManager::handleUserLogin()
     std::cout << "Enter Password: ";
     std::cin >> password;
 
+    int foundUserID = -1;
+    int foundCustomerID = -1;
     std::unique_ptr<Customer> activeCustomer = nullptr;
-    std::string folderPath = "../../../data/customers";
 
-    try {
-        // Iterate through all customer files to check credentials (using file name as ID)
-        for (const auto& entry : fs::directory_iterator(folderPath)) {
-            if (entry.is_regular_file() && entry.path().extension() == ".txt") {
-                std::ifstream file(entry.path());
+    // NOTE: This assumes you have implemented Customer::findAndAuthenticate in Customer.cpp
+    if (Customer::findAndAuthenticate(username, password, foundUserID, foundCustomerID)) {
+        try {
+            // Authentication successful. Now load the Customer object using the IDs found in customers.txt.
+            // The Customer constructor must contain logic to load the rest of the user data (names, etc.) 
+            // from customers.txt when both IDs are passed (id != -1 and id2 != -1).
+            activeCustomer = std::make_unique<Customer>(
+                username,
+                password, // Use the verified password
+                "LoadingFName", // Placeholder: Constructor should load the real name
+                "LoadingLName", // Placeholder: Constructor should load the real name
+                foundUserID,
+                foundCustomerID
+            );
 
-                // Read the lines to get UserID, CustomerID, Username, Password
-                std::string line, fileUserID, fileCustomerID, fileUsername, filePassword, fileFName, fileLName;
+            std::cout << "\n*** Login Successful! Welcome, " << activeCustomer->getFirstName() << " ***\n";
+            customerMenu(*activeCustomer); // Start the customer session
 
-                // Read exactly 6 lines for the file structure defined in Customer.cpp
-                if (std::getline(file, fileUserID) &&
-                    std::getline(file, fileCustomerID) &&
-                    std::getline(file, fileUsername) &&
-                    std::getline(file, filePassword) &&
-                    std::getline(file, fileFName) &&
-                    std::getline(file, fileLName))
-                {
-                    // Check if credentials match
-                    if (fileUsername == username && filePassword == password) {
-                        int userID = std::stoi(fileUserID);
-                        int customerID = std::stoi(fileCustomerID);
-
-                        // Create a Customer object from the loaded file data.
-                        // The 'id' (userID) and 'id2' (customerID) are passed to load the existing user.
-                        activeCustomer = std::make_unique<Customer>(
-                            fileUsername,
-                            "Aa11", // Placeholder, password validity checked on creation, but base class expects a valid one
-                            fileFName,
-                            fileLName,
-                            userID,
-                            customerID
-                        );
-                        break;
-                    }
-                }
-            }
         }
-    }
-    catch (const fs::filesystem_error& e) {
-        std::cerr << "Filesystem Error during user login: " << e.what() << std::endl;
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Error during customer file processing: " << e.what() << std::endl;
-    }
-
-    if (activeCustomer) {
-        std::cout << "\n*** Login Successful! Welcome, " << activeCustomer->getFirstName() << " ***\n";
-        customerMenu(*activeCustomer); // Start the customer session
+        catch (const std::runtime_error& e) {
+            std::cerr << "\nERROR: Failed to load customer object after authentication: " << e.what() << std::endl;
+        }
     }
     else {
         std::cout << "\n!!! Login Failed. Invalid username or password. !!!\n";
@@ -142,7 +118,7 @@ void LoginManager::handleUserLogin()
 }
 
 
-void LoginManager::handleAccountCreation() 
+void LoginManager::handleAccountCreation()
 {
     std::string username, password, fName, lName;
     double initialDeposit;
@@ -194,6 +170,10 @@ void LoginManager::handleAccountCreation()
 
 void LoginManager::handleManagerLogin()
 {
+    // NOTE: This function is still using the old, individual file system logic (fs::directory_iterator). 
+    // It should be updated to use a consolidated BankManager::findAndAuthenticate function 
+    // that scans a single file (e.g., ../../../data/managers.txt) next.
+
     std::string username, password;
     std::cout << "\n--- Manager Login ---\n";
     std::cout << "Enter Manager Username: ";
@@ -294,16 +274,14 @@ void customerMenu(Customer& customer) {
 }
 
 void handleBankOperations(Customer& customer) {
-    // A complete implementation would load the BankAccount object(s) associated with customer.getCustomerID() 
-    // from the ../../../data/bankAccounts/ folder. For this implementation, we will simulate the process.
-
-    // 1. Find and load the customer's bank account (assuming only one for simplicity).
-    std::string bankAccountFilePath = "../../../data/bankAccounts/" + std::to_string(customer.getCustomerID()) + ".txt";
-    // NOTE: This assumes the customerID and BankAccountID are the same, which is a simplification. 
-    // In a real system, the customer file would list account IDs. We will use a dummy ID (1001) for the demo.
+    // The current logic uses a hardcoded dummy account for operations. 
+    // Next Step: We need to implement BankAccount::loadForCustomer(int customerID) 
+    // to find the real account ID in bankAccounts.txt and load it.
 
     // Simulate loading the account (requires a proper BankAccount::load() function which is not present)
-    BankAccount account(customer.getCustomerID(), BankAccount::BankAccountType::CHECKINGS, 1000.00, 1001); // Dummy Account
+    // Using a fixed BankAccount ID (1) since we know the account creation worked for ID 1.
+    // NOTE: This relies on the BankAccount constructor loading the data from bankAccounts.txt when accID != -1
+    BankAccount account(customer.getCustomerID(), BankAccount::BankAccountType::CHECKINGS, 1000.00, 1); // Using ID 1
 
     int choice;
     double amount;

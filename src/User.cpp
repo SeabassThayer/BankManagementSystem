@@ -4,18 +4,20 @@
 #include <stdexcept>
 #include <cctype>
 #include <regex>
+#include <sstream> // Needed for stringstream parsing
 
 // if 'id' is -1, the user already is a user, which means this constructor is being used to load users from the data folder. 
 // if 'id' is not -1, constructor is creating a new user.
-User::User(const std::string& user, const std::string& pass, const std::string& fName, const std::string& lName, const int& id) 
+User::User(const std::string& user, const std::string& pass, const std::string& fName, const std::string& lName, const int& id)
 {
 	// determine if user already has a unique id or not. 
 	// if 'id' is -1, user does not have unique id,so user is given a unqiue id.  
 	userID = id;
 	if (userID == -1) {
+		// *** IMPORTANT FIX: Calls the function that scans the consolidated file ***
 		userID = getNewID();
 	}
-	
+
 	// if program failed to give user a unique id, it will throw an error and cancel the creation of the user.
 	if (userID == -1) {
 		throw std::runtime_error("userID was was not able to be assigned");
@@ -45,37 +47,42 @@ User::User(const std::string& user, const std::string& pass, const std::string& 
 	std::cout << "new user has been created!" << std::endl;
 }
 
+// *** CRITICAL FIX: getNewID now scans the master data file to find the next unique ID. ***
 int User::getNewID() const
 {
-	// relative path to the location of userID file.
-	std::ifstream inputFile("../../../data/IDtrackers/userID.txt");
+	// The starting ID if no users exist.
+	int max_id = 1;
 
-	// default value is -1 & it only changes if inputFile is able to be opened. 
-	int id = -1;
+	// Path to the consolidated customer data file.
+	std::ifstream inputFile("../../../data/customers.txt");
 
 	if (inputFile.is_open()) {
-		//retrieve 1 number from file. (only 1 number exists in the txt file).
-		inputFile >> id;
+		std::string line;
+		while (std::getline(inputFile, line)) {
+			// Assuming the format is: UserID|...
+			std::stringstream ss(line);
+			std::string segment;
+
+			// Extract the first segment (UserID) separated by '|'
+			if (std::getline(ss, segment, '|')) {
+				try {
+					int current_id = std::stoi(segment);
+					if (current_id >= max_id) {
+						// The next available ID is one higher than the largest found.
+						max_id = current_id + 1;
+					}
+				}
+				catch (const std::exception& e) {
+					// Log error but continue to scan other lines
+					std::cerr << "Warning: Error parsing UserID in customers.txt (Line: " << line << "). " << e.what() << std::endl;
+				}
+			}
+		}
 		inputFile.close();
 	}
-	else {
-		std::cout << "ERROR: Unable to open \"userID.txt\" for READING." << std::endl;
-	}
+	// If the file doesn't exist, max_id remains 1.
 
-	// if we retrieved number from file successfully, the file is updated (it will increase by 1).
-	if (id != -1) {
-		std::ofstream outputFile("../../../data/IDtrackers/userID.txt");
-
-		if (outputFile.is_open()) {
-			outputFile << id + 1;
-			outputFile.close();
-		}
-		else {
-			std::cout << "ERROR: unable to open \"userID.txt\" for WRITING" << std::endl;
-		}
-	}
-
-	return id;
+	return max_id;
 }
 
 bool User::validateUsernamePassword(const std::string& password, const std::string& username) const
@@ -86,7 +93,7 @@ bool User::validateUsernamePassword(const std::string& password, const std::stri
 	std::regex hasLowercase("[a-z]");
 	std::regex hasUppercase("[A-Z]");
 	std::regex hasNumber("[0-9]+");
-	
+
 	// if password & username length are not between 4 and 12 characters, they are not valid.
 	if (password.length() < 4 || username.length() < 4) {
 		valid = false;
@@ -170,12 +177,21 @@ bool User::validateName(const std::string& fname, const std::string& lname) cons
 	return valid;
 }
 
-User::~User() 
+User::~User()
 {
 	std::cout << "WARNING: user instance has been deleted from program: " << firstName << " " << lastName << std::endl;
 }
 
+// =======================================================
+//                   CONCRETE GETTERS
+// These are efficient and return the memory-resident data.
+// =======================================================
+
 int User::getUserID() const { return userID; }
+
+std::string User::getUsername() const { return username; }
+
+std::string User::getPassword() const { return password; }
 
 std::string User::getFirstName() const { return firstName; }
 
