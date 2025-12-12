@@ -367,11 +367,11 @@ void managerMenu(BankManager& manager) {
             continue;
         }
 
+        std::vector<Customer> allCustomers = Customer::loadAllCustomers();
         switch (choice) {
         case 1: handleManagerOperations(manager); break;
         case 2:
-            std::cout << "\n--- Access All User Data ---\n";
-            std::cout << "As a manager, you have the capability to iterate through the 'data/customers/' and 'data/bankAccounts/' directories to view all stored user information and transaction history.\n";
+            manager.viewAllCustomers(allCustomers);
             break;
         case 3:
             loggedIn = false;

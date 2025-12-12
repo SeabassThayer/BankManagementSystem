@@ -26,14 +26,8 @@ public:
 
     int getManagerID() const;
     
-    // TO DO: retrieve all customers in the file system to show their data. 
-    void viewAllCustomers(const std::vector<User>& users) const;
-
-    // TO DO: get the total amount of bank accounts and the total amount of customers. 
-    void viewBankSystemInfo() const;
-
-    //Customer findCustomerAccount(std::string& customerID) const; // TO-DO if time allows
-    //BankAccount findBankAccount(std::string& bankAccountID) const; // TO-DO if time allows
+    // retrieve all customers in the file system to show their data. 
+    void viewAllCustomers(const std::vector<Customer>& customers) const;
 
 private:
     // return a unique Manager ID to whoever called the function. 

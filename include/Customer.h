@@ -47,10 +47,15 @@ public:
     std::string getUsername() const override;
 
     std::string getPassword() const override;
+    
+    // return all customers
+    static std::vector<Customer> loadAllCustomers();
 
 private:
     // return a unique Customer ID to whoever called the function. 
     int getNewID() const override;
+
+    
 };
 
 #endif  //CUSTOMER_H

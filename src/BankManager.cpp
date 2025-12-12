@@ -20,7 +20,6 @@ BankManager::BankManager(const std::string& user, const std::string& pass, const
 	managerID = id2;
 	bool newManager = false;
 	if (managerID == -1) {
-		std::cout << "First login into the system for current manager. IDs will be assigned" << std::endl;
 		newManager = true;
 		managerID = getNewID();
 	}
@@ -37,9 +36,6 @@ BankManager::BankManager(const std::string& user, const std::string& pass, const
 			throw std::runtime_error("IDs were not able to be updated on Manager file");
 		}
 	}
-
-	// print after Manager has been loaded successfully. 
-	std::cout << "manager (" << getFirstName() << ") has been loaded from file" << std::endl;
 }
 
 // use relative path to find file containing a unique manager ID
@@ -87,7 +83,6 @@ bool BankManager::setManagerIDs(int userid, int managerid, std::string user) con
 
 			if (indexedManager == targetFile) {
 				fileFound = true;
-				std::cout << "Setting IDs in file: " << indexedManager << std::endl;
 
 				std::ifstream managerInfo(managerFile.path());
 				std::string* lines = new std::string[6];
@@ -247,6 +242,33 @@ std::string BankManager::getPassword() const
 
 	// return "-1" if password was not found. 
 	return pass;
+}
+
+void BankManager::viewAllCustomers(const std::vector<Customer>& customers) const
+{
+	if (customers.empty()) {
+		std::cout << "\nNo customers found in the system.\n";
+		return;
+	}
+
+	std::cout << "\n============ ALL CUSTOMERS ===========\n";
+
+	for (const Customer& c : customers) {
+		std::cout << "\nCustomer ID: " << c.getCustomerID() << "\n";
+		std::cout << "Name: " << c.getFirstName() << " " << c.getLastName() << "\n";
+		std::cout << "Username: " << c.getUsername() << "\n";
+
+		// load and display account
+		BankAccount account = BankAccount::loadAccount(c.getCustomerID());
+
+		std::cout << "Bank Account ID: " << account.getBankAccountID() << "\n";
+		std::cout << "Account Type: " << (account.getAccountType() == BankAccount::BankAccountType::CHECKINGS ? "Checkings" : "Savings") << "\n";
+		std::cout << "Balance: $" << account.getBalance() << "\n";
+
+		std::cout << "--------------------------------------\n";
+	}
+
+	std::cout << "\n============ END CUSTOMER LIST ==========\n";
 }
 
 BankManager::~BankManager() { }

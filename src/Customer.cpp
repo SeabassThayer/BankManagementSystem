@@ -258,6 +258,37 @@ std::string Customer::getPassword() const
 	return pass;
 }
 
+std::vector<Customer> Customer::loadAllCustomers()
+{
+	std::vector<Customer> customers;
+	std::string folder = "../../../data/customers";
+
+	// loop through all the customers in folder
+	for (const auto& file : std::filesystem::directory_iterator(folder))
+	{
+		std::ifstream in(file.path());
+		if (!in.is_open()) continue;
+
+		std::string line;
+		std::vector<std::string> dataLines;
+
+		while (std::getline(in, line)) {
+			dataLines.push_back(line);
+		}
+
+		int userID = std::stoi(dataLines[0]);
+		int customerID = std::stoi(dataLines[1]);
+		std::string user = dataLines[2];
+		std::string pass = dataLines[3];
+		std::string f = dataLines[4];
+		std::string l = dataLines[5];
+
+		customers.emplace_back(user, pass, f, l, userID, customerID);
+	}
+	return customers;
+}
+
+
 Customer::~Customer() { }
 
 int Customer::getCustomerID() const { return customerID; }
