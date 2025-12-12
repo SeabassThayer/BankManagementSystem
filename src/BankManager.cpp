@@ -249,9 +249,6 @@ std::string BankManager::getPassword() const
 	return pass;
 }
 
-BankManager::~BankManager()
-{
-	std::cout << "WARNING: Manager instance removed from program: " << getFirstName() << " " << getLastName() << std::endl;
-}
+BankManager::~BankManager() { }
 
 int BankManager::getManagerID() const { return managerID; }

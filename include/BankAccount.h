@@ -33,6 +33,12 @@ private:
 
     std::vector<Transaction> transactions;
 
+    //update bank information in the system.
+    void saveToFile() const;
+
+    //load transaction information from the system
+    void loadTransactions();
+
     // current number of bank accounts in the system. 
     // saved in file system to keep track even if program terminates. 
     static int totalBankAccounts;
@@ -72,6 +78,9 @@ public:
 
     // save current amount of bank accounts to the file system. 
     static void saveTotalBankAccounts();
+
+    // return bank account instance given a customerID (assumes 1 customer has 1 account each)
+    static BankAccount loadAccount(int customerID);
 
 private:
     // return a unique bank account ID to whoever called the function.

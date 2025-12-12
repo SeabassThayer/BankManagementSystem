@@ -199,7 +199,6 @@ std::string Customer::getUsername() const
 	return user;
 }
 
-
 // retrieve Password from Customer using Customers unique ID
 std::string Customer::getPassword() const
 {

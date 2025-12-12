@@ -60,14 +60,14 @@ void LoginManager::run()
             case 2: handleAccountCreation(); break;
             case 3: handleManagerLogin(); break;
             case 4: running = false; break;
-            default: std::cout << "Invalid option. Try again.\n"; break;
+            default: std::cout << "ERROR: Invalid option. Try again.\n"; break;
         }
     }
 }
 
 void LoginManager::showMainMenu() 
 {
-    std::cout << "\nWelcome to Awesome Bank\n";
+    std::cout << "\n\n\nWelcome to Awesome Bank\n";
     std::cout << "1. User Login\n";
     std::cout << "2. Create Account\n";
     std::cout << "3. Manager Login\n";
@@ -144,50 +144,58 @@ void LoginManager::handleUserLogin()
 
 void LoginManager::handleAccountCreation() 
 {
-    std::string username, password, fName, lName;
-    double initialDeposit;
-    int accTypeChoice;
-
-    std::cout << "\n--- New Account Creation ---\n";
-    std::cout << "Enter First Name: ";
-    std::cin >> fName;
-    std::cout << "Enter Last Name: ";
-    std::cin >> lName;
-    std::cout << "Enter desired Username: ";
-    std::cin >> username;
-    std::cout << "Enter desired Password (4-12 chars, min 1 l/c, 1 u/c, 1 num): ";
-    std::cin >> password;
-    std::cout << "Select Account Type (1: CHECKINGS, 2: SAVINGS): ";
-    std::cin >> accTypeChoice;
-    std::cout << "Enter Initial Deposit Amount (> 0): $";
-    std::cin >> initialDeposit;
-
-    // Input validation for account type and deposit
-    if (std::cin.fail() || (accTypeChoice != 1 && accTypeChoice != 2) || initialDeposit <= 0) {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "\n!!! Invalid input for account type or deposit amount. Creation cancelled. !!!\n";
-        return;
-    }
-
-    BankAccount::BankAccountType accType = (accTypeChoice == 1) ? BankAccount::BankAccountType::CHECKINGS : BankAccount::BankAccountType::SAVINGS;
-
     try {
-        // 1. Create Customer: This constructor validates, assigns a unique ID (-1 means new ID), and saves the user/pass/info to file.
-        // Note: The base User class will validate the password and throw an error if invalid.
-        Customer newCustomer(username, password, fName, lName, -1, -1);
+        std::string username, password, firstName, lastName;
+        int accountTypeChoice;
+        double initialBalance;
 
-        // 2. Create Bank Account: This constructor links the account to the CustomerID, assigns a unique ID, and saves the account data to file.
-        BankAccount newAccount(newCustomer.getCustomerID(), accType, initialDeposit, -1);
+        std::cout << "\n\n\nCreate New Account\n";
 
-        std::cout << "\n*** Customer Account (" << newCustomer.getCustomerID()
-            << ") and Bank Account (" << newAccount.getBankAccountID()
-            << ") Created Successfully! ***\n";
+        // Ask for User data
+        std::cout << "Enter username: ";
+        std::cin >> username;
+        std::cout << "Enter password: ";
+        std::cin >> password;
+        std::cout << "Enter first name: ";
+        std::cin >> firstName;
+        std::cout << "Enter last name: ";
+        std::cin >> lastName;
+
+        // Create new Customer (id = -1, id2 = -1 signals new user)
+        Customer newCustomer(username, password, firstName, lastName, -1, -1);
+
+        // Ask for account type & ensure user input is either 1 or 2
+        std::cout << "Choose account type (1.Checkings, 2.Savings): ";
+        std::cin >> accountTypeChoice;
+        if (std::cin.fail() || (accountTypeChoice != 1 && accountTypeChoice != 2)) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            throw std::runtime_error("Invalid account type selected.");
+        }
+
+        // Ask for initial bank account balance
+        // validate to ensure user inputs number bigger than 0
+        std::cout << "Enter initial deposit amount: ";
+        std::cin >> initialBalance;
+        if (std::cin.fail() || initialBalance < 0) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            throw std::runtime_error("ERROR: Invalid initial balance entered.");
+        }
+
+        // use enum to select the user-selected bank account type. 
+        BankAccount::BankAccountType type = (accountTypeChoice == 1) ? BankAccount::BankAccountType::CHECKINGS : BankAccount::BankAccountType::SAVINGS;
+
+        // Create new Bank Account
+        BankAccount newAccount(newCustomer.getCustomerID(), type, initialBalance);
+
+        std::cout << "\nAccount successfully created for " << firstName << " " << lastName << "!\n";
+        std::cout << "Customer ID: " << newCustomer.getCustomerID() << "\n";
+        std::cout << "Bank Account ID: " << newAccount.getBankAccountID() << "\n";
 
     }
     catch (const std::runtime_error& e) {
-        // Catch runtime errors from Customer/User/BankAccount creation (e.g., file error, validation error)
-        std::cerr << "\n!!! Account creation failed: " << e.what() << " !!!\n";
+        std::cerr << "ERROR: " << e.what() << std::endl;
     }
 }
 
@@ -302,9 +310,7 @@ void handleBankOperations(Customer& customer) {
     // NOTE: This assumes the customerID and BankAccountID are the same, which is a simplification. 
     // In a real system, the customer file would list account IDs. We will use a dummy ID (1001) for the demo.
 
-    // Simulate loading the account (requires a proper BankAccount::load() function which is not present)
-    BankAccount account(customer.getCustomerID(), BankAccount::BankAccountType::CHECKINGS, 1000.00, 1001); // Dummy Account
-
+    BankAccount account = BankAccount::loadAccount(customer.getCustomerID());
     int choice;
     double amount;
     std::cout << "\n--- Bank Operations for Account " << account.getBankAccountID() << " ---\n";

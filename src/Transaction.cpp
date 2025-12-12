@@ -35,13 +35,10 @@ Transaction::Transaction(int bankAccID, AccountTransactionType type, double amou
 			transactionFile << getTimestamp() << std::endl;
 			transactionFile.close();
 		}
+		else {
+			throw std::runtime_error("Transaction file was not created");
+		}
 	}
-	else {
-		throw std::runtime_error("Transaction file was not created");
-	}
-
-	// will display after transaction has been successfully created
-	std::cout << "Transaction File was generated!" << std::endl;
 }
 
 int Transaction::getNewID() const
@@ -75,10 +72,7 @@ int Transaction::getNewID() const
 	return id;
 }
 
-Transaction::~Transaction()
-{
-	std::cout << "WARNING: tranaction record deleted from program memory" << std::endl;
-}
+Transaction::~Transaction() { }
 
 						// getters //
 
